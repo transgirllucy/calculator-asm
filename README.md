@@ -67,23 +67,6 @@ For development with Nix:
 # Enter a development shell with all required tools
 nix develop
 ```
-This provides an environment with NASM, binutils, and GDB for assembly development.
-Technical Details
-Aspect	Description
-Target architecture	x86_64 (AMD64)
-Operating system	Linux
-Assembly dialect	NASM
-Binary format	ELF64
-System call interface	Linux syscalls
-Dependencies	None (no external libraries required)
-Project Structure
-
-```
-.
-├── calculator.asm    # Main assembly source code
-├── flake.nix         # Nix flake for building and development
-└── README.md         # This file
-```
 
 # License
 
