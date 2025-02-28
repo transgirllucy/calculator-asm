@@ -1,0 +1,45 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nasm binutils
+
+    - name: Build calculator
+      run: make
+
+    - name: Verify build
+      run: |
+        if [ ! -f calculator ]; then
+          echo "Build failed: calculator binary not found"
+          exit 1
+        fi
+        
+        file calculator | grep -q "ELF 64-bit"
+        if [ $? -ne 0 ]; then
+          echo "Build verification failed: not a valid ELF 64-bit executable"
+          exit 1
+        fi
+        
+        echo "Build successful and verified"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: calculator-linux-x86_64
+        path: calculator
